@@ -419,8 +419,11 @@ function () {
         this.input.setAttribute('aria-activedescendant', "".concat(this.ul.id, "_item_").concat(this.index)); // scroll to highlighted element in case parent's height is fixed
 
         this.ul.scrollTop = lis[i].offsetTop - this.ul.clientHeight + lis[i].clientHeight;
+        var suggestion = this.suggestions[this.index];
         Awesomplete.fire(this.input, 'awesomplete-highlight', {
-          text: this.suggestions[this.index]
+          selectedIndex: this.index,
+          selectedText: "".concat(suggestion),
+          selectedSuggestion: suggestion
         });
       }
     }
@@ -436,24 +439,23 @@ function () {
       }
 
       if (selectedItem) {
-        var suggestion = this.suggestions[this.index];
         var selectedIndex = this.index;
+        var suggestion = this.suggestions[selectedIndex];
         var allowed = Awesomplete.fire(this.input, 'awesomplete-select', {
-          text: "".concat(suggestion),
           selectedIndex: selectedIndex,
+          selectedText: "".concat(suggestion),
           selectedSuggestion: suggestion,
           origin: origin || selectedItem
         });
 
         if (allowed) {
-          console.log(suggestion);
           this.replace(suggestion);
           this.close({
             reason: 'select'
           });
           Awesomplete.fire(this.input, 'awesomplete-selectcomplete', {
-            text: "".concat(suggestion),
             selectedIndex: selectedIndex,
+            selectedText: "".concat(suggestion),
             selectedSuggestion: suggestion
           });
         }
@@ -600,7 +602,6 @@ function () {
   }, {
     key: "REPLACE",
     value: function REPLACE(text) {
-      console.log(text);
       this.input.value = text.value || text.label;
     }
   }, {
@@ -713,7 +714,10 @@ function () {
 
       while (testEl) {
         testEl = testEl.previousElementSibling;
-        i += 1;
+
+        if (testEl) {
+          i += 1;
+        }
       }
 
       return i;

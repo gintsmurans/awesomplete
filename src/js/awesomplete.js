@@ -330,8 +330,8 @@ export default class Awesomplete {
 
             const suggestion = this.suggestions[this.index];
             Awesomplete.fire(this.input, 'awesomplete-highlight', {
-                text: `${suggestion}`,
                 selectedIndex: this.index,
+                selectedText: `${suggestion}`,
                 selectedSuggestion: suggestion,
             });
         }
@@ -349,8 +349,8 @@ export default class Awesomplete {
             const selectedIndex = this.index;
             const suggestion = this.suggestions[selectedIndex];
             const allowed = Awesomplete.fire(this.input, 'awesomplete-select', {
-                text: `${suggestion}`,
                 selectedIndex,
+                selectedText: `${suggestion}`,
                 selectedSuggestion: suggestion,
                 origin: origin || selectedItem,
             });
@@ -359,8 +359,8 @@ export default class Awesomplete {
                 this.replace(suggestion);
                 this.close({ reason: 'select' });
                 Awesomplete.fire(this.input, 'awesomplete-selectcomplete', {
-                    text: `${suggestion}`,
                     selectedIndex,
+                    selectedText: `${suggestion}`,
                     selectedSuggestion: suggestion,
                 });
             }

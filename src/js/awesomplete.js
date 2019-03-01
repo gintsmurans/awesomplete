@@ -328,8 +328,11 @@ export default class Awesomplete {
             // scroll to highlighted element in case parent's height is fixed
             this.ul.scrollTop = lis[i].offsetTop - this.ul.clientHeight + lis[i].clientHeight;
 
+            const suggestion = this.suggestions[this.index];
             Awesomplete.fire(this.input, 'awesomplete-highlight', {
-                text: this.suggestions[this.index],
+                text: `${suggestion}`,
+                selectedIndex: this.index,
+                selectedSuggestion: suggestion,
             });
         }
     }

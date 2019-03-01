@@ -1,81 +1,71 @@
-# Awesomplete
+# Awesomplete ES6 Port
 [![npm version](https://img.shields.io/npm/v/awesomplete.svg)](https://www.npmjs.com/package/awesomplete)
 [![Build Status](https://img.shields.io/travis/LeaVerou/awesomplete/gh-pages.svg)](https://travis-ci.org/LeaVerou/awesomplete)
 [![Code Climate](https://img.shields.io/codeclimate/github/LeaVerou/awesomplete.svg)](https://codeclimate.com/github/LeaVerou/awesomplete)
 [![Test Coverage](https://img.shields.io/codeclimate/coverage/github/LeaVerou/awesomplete.svg)](https://codeclimate.com/github/LeaVerou/awesomplete/coverage)
 
-http://leaverou.github.io/awesomplete/
+https://gintsmurans.github.io/awesomplete-cs6/
 
 Awesomplete is an ultra lightweight, customizable, simple autocomplete widget with zero dependencies, built with modern standards for modern browsers.
 
 ## Installation
 There are a few ways to obtain the needed files.
 Here are 2 of them:
-1. CDN server
 
 ```sh
-https://cdnjs.com/libraries/awesomplete
+npm install awesomplete-cs6 --save
 ```
 
-2. Another way to get up and running is by using `yarn` or `npm`:
-
-```sh
-yarn add awesomplete
-```
-
-```sh
-npm install awesomplete --save
-```
-
-More information about the npm package can be found [here](https://www.npmjs.com/package/awesomplete).
+More information about the npm package can be found [here](https://www.npmjs.com/package/awesomplete-es6).
 
 ## Basic Usage
 
-Before you try anything, you need to include awesomplete.css and awesomplete.js in your page, via the usual tags:
-
 ```html
-<link rel="stylesheet" href="awesomplete.css" />
-<script src="awesomplete.js" async></script>
-```
-
-Then you can add an Awesomplete widget by adding the following input tag:
-
-```html
-<input class="awesomplete"
+<input class="test-field"
        data-list="Ada, Java, JavaScript, Brainfuck, LOLCODE, Node.js, Ruby on Rails" />
 ```
 
-Add `class="awesomplete"` for it to be automatically processed (you can still specify many options via HTML attributes)
-Otherwise you can instantiate with a few lines of JS code, which allow for more customization.
+```javascript
+import Awesomplete from 'awesomplete-es6';
+const settings = {
+    minChars: 1,
+    autoFirst: true,
+    data: (item) => {
+        const title = item.title;
+        return { label: title, userData: item };
+    },
+};
+const awesomplete = new Awesomplete($('.test-field')[0], settings);
+```
 
-There are many ways to link an input to a list of suggestions. 
+There are many ways to link an input to a list of suggestions.
 The simple example above could have also been made with the following markup, which provides a nice native fallback in case the script doesn’t load:
 
 ```html
-<input class="awesomplete" list="mylist" />
+<input class="test-field" list="mylist" />
 <datalist id="mylist">
-	<option>Ada</option>
-	<option>Java</option>
-	<option>JavaScript</option>
-	<option>Brainfuck</option>
-	<option>LOLCODE</option>
-	<option>Node.js</option>
-	<option>Ruby on Rails</option>
+    <option>Ada</option>
+    <option>Java</option>
+    <option>JavaScript</option>
+    <option>Brainfuck</option>
+    <option>LOLCODE</option>
+    <option>Node.js</option>
+    <option>Ruby on Rails</option>
 </datalist>
 ```
 
 Or the following, if you don’t want to use a `<datalist>`, or if you don’t want to use IDs (since any selector will work in data-list):
 
 ```html
-<input class="awesomplete" data-list="#mylist" />
+<input class="test-field" data-list="#mylist" />
 <ul id="mylist">
-	<li>Ada</li>
-	<li>Java</li>
-	<li>JavaScript</li>
-	<li>Brainfuck</li>
-	<li>LOLCODE</li>
-	<li>Node.js</li>
-	<li>Ruby on Rails</li>
+    <li>Ada</li>
+    <li>Java</li>
+    <li>JavaScript</li>
+    <li>Brainfuck</li>
+    <li>LOLCODE</li>
+    <li>Node.js</li>
+    <li>Ruby on Rails</li>
 </ul>
 ```
 
@@ -88,7 +78,7 @@ details.
 
 ## Links
 
-The official site for the library is at <http://leaverou.github.io/awesomplete/>.
+This is ES6 fork of the original library that can be found at <http://leaverou.github.io/awesomplete/>.
 
 Documentation for the API and other topics is at
 <http://leaverou.github.io/awesomplete/#api>.

@@ -1,0 +1,24 @@
+language: node_js
+
+node_js:
+  - "0.10"
+
+branches:
+  only:
+    - master
+    - /v\d+\.\d+/
+
+install:
+  - npm install
+
+before_script:
+
+after_script:
+  - npm run js:build:dev && npm run css:build
+
+deploy:
+  provider: npm
+  email: $NPM_EMAIL
+  api_key: $NPM_TOKEN
+  on:
+    tags: true

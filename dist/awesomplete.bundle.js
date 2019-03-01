@@ -1,14 +1,5 @@
-(function webpackUniversalModuleDefinition(root, factory) {
-	if(typeof exports === 'object' && typeof module === 'object')
-		module.exports = factory();
-	else if(typeof define === 'function' && define.amd)
-		define([], factory);
-	else if(typeof exports === 'object')
-		exports["Awesomplete"] = factory();
-	else
-		root["Awesomplete"] = factory();
-})(window, function() {
-return /******/ (function(modules) { // webpackBootstrap
+var Awesomplete =
+/******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
 /******/
@@ -197,7 +188,12 @@ function () {
     this.input.setAttribute('role', 'combobox'); // store constructor options in case we need to distinguish
     // between default and customized behavior later on
 
-    this.options = o || {};
+    if (o) {
+      this.options = o;
+    } else {
+      this.options = {};
+    }
+
     this.configure({
       minChars: 2,
       maxItems: 10,
@@ -423,8 +419,11 @@ function () {
         this.input.setAttribute('aria-activedescendant', "".concat(this.ul.id, "_item_").concat(this.index)); // scroll to highlighted element in case parent's height is fixed
 
         this.ul.scrollTop = lis[i].offsetTop - this.ul.clientHeight + lis[i].clientHeight;
+        var suggestion = this.suggestions[this.index];
         Awesomplete.fire(this.input, 'awesomplete-highlight', {
-          text: this.suggestions[this.index]
+          selectedIndex: this.index,
+          selectedText: "".concat(suggestion),
+          selectedSuggestion: suggestion
         });
       }
     }
@@ -440,11 +439,11 @@ function () {
       }
 
       if (selectedItem) {
-        var suggestion = this.suggestions[this.index];
         var selectedIndex = this.index;
+        var suggestion = this.suggestions[selectedIndex];
         var allowed = Awesomplete.fire(this.input, 'awesomplete-select', {
-          text: "".concat(suggestion),
           selectedIndex: selectedIndex,
+          selectedText: "".concat(suggestion),
           selectedSuggestion: suggestion,
           origin: origin || selectedItem
         });
@@ -455,8 +454,8 @@ function () {
             reason: 'select'
           });
           Awesomplete.fire(this.input, 'awesomplete-selectcomplete', {
-            text: "".concat(suggestion),
             selectedIndex: selectedIndex,
+            selectedText: "".concat(suggestion),
             selectedSuggestion: suggestion
           });
         }
@@ -715,7 +714,10 @@ function () {
 
       while (testEl) {
         testEl = testEl.previousElementSibling;
-        i += 1;
+
+        if (testEl) {
+          i += 1;
+        }
       }
 
       return i;
@@ -729,6 +731,5 @@ function () {
 
 /***/ })
 
-/******/ });
-});
+/******/ })["default"];
 //# sourceMappingURL=awesomplete.bundle.js.map

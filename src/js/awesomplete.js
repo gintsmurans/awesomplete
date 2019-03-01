@@ -370,12 +370,8 @@ export default class Awesomplete {
             // Populate list with options that match
             this.ul.innerHTML = '';
 
-            const mapFn = function (item) {
-                return new Suggestion(me.data(item, value));
-            };
-            const filterFn = function (item) {
-                return me.filter(item, value);
-            };
+            const mapFn = item => new Suggestion(me.data(item, value));
+            const filterFn = item => me.filter(item, value);
             this.suggestions = this.dataList
                 .map(mapFn)
                 .filter(filterFn);
@@ -386,7 +382,7 @@ export default class Awesomplete {
 
             this.suggestions = this.suggestions.slice(0, this.maxItems);
 
-            const appendFn = function (text, index) {
+            const appendFn = (text, index) => {
                 me.ul.appendChild(me.item(text, value, index));
             };
             this.suggestions.forEach(appendFn);
@@ -461,7 +457,7 @@ export default class Awesomplete {
 
     static create(tag, o) {
         const element = document.createElement(tag);
-        const iterFn = function (i) {
+        const iterFn = (i) => {
             const val = o[i];
 
             if (i === 'inside') {
@@ -487,9 +483,9 @@ export default class Awesomplete {
 
     static bind(element, o) {
         if (element) {
-            const iterFn = function (cKey) {
+            const iterFn = (cKey) => {
                 const callback = o[cKey];
-                const eventIterFn = function (event) {
+                const eventIterFn = (event) => {
                     element.addEventListener(event, callback);
                 };
                 cKey.split(/\s+/).forEach(eventIterFn);
@@ -500,9 +496,9 @@ export default class Awesomplete {
 
     static unbind(element, o) {
         if (element) {
-            const iterFn = function (cKey) {
+            const iterFn = (cKey) => {
                 const callback = o[cKey];
-                const eventIterFn = function (event) {
+                const eventIterFn = (event) => {
                     element.removeEventListener(event, callback);
                 };
                 cKey.split(/\s+/).forEach(eventIterFn);
@@ -513,7 +509,7 @@ export default class Awesomplete {
 
     static fire(target, type, properties) {
         const evt = document.createEvent('HTMLEvents');
-        const iterFn = function (j) {
+        const iterFn = (j) => {
             evt[j] = properties[j];
         };
         evt.initEvent(type, true, true);

@@ -91,15 +91,15 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = "./src/awesomplete.js");
+/******/ 	return __webpack_require__(__webpack_require__.s = "./src/js/awesomplete.js");
 /******/ })
 /************************************************************************/
 /******/ ({
 
-/***/ "./src/awesomplete.js":
-/*!****************************!*\
-  !*** ./src/awesomplete.js ***!
-  \****************************/
+/***/ "./src/js/awesomplete.js":
+/*!*******************************!*\
+  !*** ./src/js/awesomplete.js ***!
+  \*******************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -116,10 +116,68 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 
 /**
  * Simple, lightweight, usable local autocomplete library for modern browsers
- * Because there weren’t enough autocomplete scripts in the world? Because I’m completely insane and have NIH syndrome? Probably both. :P
+ * Because there weren’t enough autocomplete scripts in the world?
+ * Because I’m completely insane and have NIH syndrome? Probably both. :P
  * @author Lea Verou http://leaverou.github.io/awesomplete
  * MIT license
  */
+
+/** Class representing a single Suggesstion. */
+var Suggestion =
+/*#__PURE__*/
+function () {
+  function Suggestion(data) {
+    _classCallCheck(this, Suggestion);
+
+    var o = {
+      label: 'Unknown data',
+      value: 'Unknown data'
+    };
+
+    if (typeof data === 'string') {
+      o = {
+        label: data,
+        value: data
+      };
+    } else if (Array.isArray(data)) {
+      o = {
+        label: data[0],
+        value: data[1]
+      };
+    } else if (_typeof(data) === 'object' && ('label' in data || 'value' in data)) {
+      o = data;
+    }
+
+    this.label = o.label || o.value;
+    this.value = o.value;
+
+    if ('userData' in o) {
+      this.userData = o.userData;
+    }
+  }
+
+  _createClass(Suggestion, [{
+    key: "toString",
+    value: function toString() {
+      return "".concat(this.label);
+    }
+  }, {
+    key: "valueOf",
+    value: function valueOf() {
+      return this.toString();
+    }
+  }, {
+    key: "length",
+    get: function get() {
+      return this.label.length;
+    }
+  }]);
+
+  return Suggestion;
+}();
+/** Class representing Awesomplete. */
+
+
 var Awesomplete =
 /*#__PURE__*/
 function () {
@@ -133,14 +191,14 @@ function () {
     this.count = Awesomplete.count; // Setup
 
     this.isOpened = false;
-    this.input = this.query(input);
-    this.input.setAttribute("autocomplete", "off");
-    this.input.setAttribute("aria-owns", "awesomplete_list_" + this.count);
-    this.input.setAttribute("role", "combobox"); // store constructor options in case we need to distinguish
+    this.input = Awesomplete.query(input);
+    this.input.setAttribute('autocomplete', 'off');
+    this.input.setAttribute('aria-owns', "awesomplete_list_".concat(this.count));
+    this.input.setAttribute('role', 'combobox'); // store constructor options in case we need to distinguish
     // between default and customized behavior later on
 
-    this.options = o = o || {};
-    configure(this, {
+    this.options = o || {};
+    this.configure({
       minChars: 2,
       maxItems: 10,
       autoFirst: false,
@@ -155,28 +213,28 @@ function () {
     this.index = -1; // Create necessary elements
 
     this.container = this.container(input);
-    this.ul = this.create("ul", {
-      hidden: "hidden",
-      role: "listbox",
-      id: "awesomplete_list_" + this.count,
+    this.ul = Awesomplete.create('ul', {
+      hidden: 'hidden',
+      role: 'listbox',
+      id: "awesomplete_list_".concat(this.count),
       inside: this.container
     });
-    this.status = this.create("span", {
-      className: "visually-hidden",
-      role: "status",
-      "aria-live": "assertive",
-      "aria-atomic": true,
+    this.status = Awesomplete.create('span', {
+      className: 'visually-hidden',
+      role: 'status',
+      'aria-live': 'assertive',
+      'aria-atomic': true,
       inside: this.container,
-      textContent: this.minChars != 0 ? "Type " + this.minChars + " or more characters for results." : "Begin typing for results."
+      textContent: this.minChars !== 0 ? "Type ".concat(this.minChars, " or more characters for results.") : 'Begin typing for results.'
     }); // Bind events
 
-    this._events = {
+    this.events = {
       input: {
-        "input": this.evaluate.bind(this),
-        "blur": this.close.bind(this, {
-          reason: "blur"
+        input: this.evaluate.bind(this),
+        blur: this.close.bind(this, {
+          reason: 'blur'
         }),
-        "keydown": function keydown(evt) {
+        keydown: function keydown(evt) {
           var c = evt.keyCode; // If the dropdown `ul` is in view, then act on keydown for the following keys:
           // Enter / Esc / Up / Down
 
@@ -190,30 +248,31 @@ function () {
             } else if (c === 27) {
               // Esc
               me.close({
-                reason: "esc"
+                reason: 'esc'
               });
             } else if (c === 38 || c === 40) {
               // Down/Up arrow
               evt.preventDefault();
-              me[c === 38 ? "previous" : "next"]();
+              me[c === 38 ? 'previous' : 'next']();
             }
           }
         }
       },
       form: {
-        "submit": this.close.bind(this, {
-          reason: "submit"
+        submit: this.close.bind(this, {
+          reason: 'submit'
         })
       },
       ul: {
         // Prevent the default mousedowm, which ensures the input is not blurred.
         // The actual selection will happen on click. This also ensures dragging the
         // cursor away from the list item will cancel the selection
-        "mousedown": function mousedown(evt) {
+        mousedown: function mousedown(evt) {
           evt.preventDefault();
         },
-        // The click event is fired even if the corresponding mousedown event has called preventDefault
-        "click": function click(evt) {
+        // The click event is fired even if the corresponding mousedown event has called
+        // preventDefault
+        click: function click(evt) {
           var li = evt.target;
 
           if (li !== this) {
@@ -230,54 +289,47 @@ function () {
         }
       }
     };
-    this.bind(this.input, this._events.input);
-    this.bind(this.input.form, this._events.form);
-    this.bind(this.ul, this._events.ul);
+    Awesomplete.bind(this.input, this.events.input);
+    Awesomplete.bind(this.input.form, this.events.form);
+    Awesomplete.bind(this.ul, this.events.ul);
 
-    if (this.input.hasAttribute("list")) {
-      this.list = "#" + this.input.getAttribute("list");
-      this.input.removeAttribute("list");
+    if (this.input.hasAttribute('list')) {
+      this.list = "#".concat(this.input.getAttribute('list'));
+      this.input.removeAttribute('list');
     } else {
-      this.list = this.input.getAttribute("data-list") || o.list || [];
+      this.list = this.input.getAttribute('data-list') || o.list || [];
     }
 
     Awesomplete.all.push(this);
   }
 
   _createClass(Awesomplete, [{
-    key: "list",
-    value: function list(_list) {
-      if (Array.isArray(_list)) {
-        this._list = _list;
-      } else if (typeof _list === "string" && _list.indexOf(",") > -1) {
-        this._list = _list.split(/\s*,\s*/);
-      } else {
-        // Element or CSS selector
-        _list = this.query(_list);
+    key: "configure",
+    value: function configure(properties, o) {
+      var _this = this;
 
-        if (_list && _list.children) {
-          var items = [];
-          Array.prototype.slice.apply(_list.children).forEach(function (el) {
-            if (!el.disabled) {
-              var text = el.textContent.trim();
-              var value = el.value || text;
-              var label = el.label || text;
+      var iterFn = function iterFn(i) {
+        var initial = properties[i];
 
-              if (value !== "") {
-                items.push({
-                  label: label,
-                  value: value
-                });
-              }
-            }
-          });
-          this._list = items;
+        var attrValue = _this.input.getAttribute("data-".concat(i.toLowerCase()));
+
+        if (typeof initial === 'number') {
+          _this[i] = parseInt(attrValue, 10);
+        } else if (initial === false) {
+          // Boolean options must be false by default anyway
+          _this[i] = attrValue !== null;
+        } else if (initial instanceof Function) {
+          _this[i] = null;
+        } else {
+          _this[i] = attrValue;
         }
-      }
 
-      if (document.activeElement === this.input) {
-        this.evaluate();
-      }
+        if (!_this[i] && _this[i] !== 0) {
+          _this[i] = i in o ? o[i] : initial;
+        }
+      };
+
+      Object.keys(properties).forEach(iterFn);
     }
   }, {
     key: "close",
@@ -286,42 +338,43 @@ function () {
         return;
       }
 
-      this.ul.setAttribute("hidden", "");
+      this.ul.setAttribute('hidden', '');
       this.isOpened = false;
       this.index = -1;
-      this.status.setAttribute("hidden", "");
-      this.fire(this.input, "awesomplete-close", o || {});
+      this.status.setAttribute('hidden', '');
+      Awesomplete.fire(this.input, 'awesomplete-close', o || {});
     }
   }, {
     key: "open",
     value: function open() {
-      this.ul.removeAttribute("hidden");
+      this.ul.removeAttribute('hidden');
       this.isOpened = true;
-      this.status.removeAttribute("hidden");
+      this.status.removeAttribute('hidden');
 
       if (this.autoFirst && this.index === -1) {
         this.goto(0);
       }
 
-      this.fire(this.input, "awesomplete-open");
+      Awesomplete.fire(this.input, 'awesomplete-open');
     }
   }, {
     key: "destroy",
     value: function destroy() {
-      //remove events from the input and its form
-      this.unbind(this.input, this._events.input);
-      this.unbind(this.input.form, this._events.form); // cleanup container if it was created by Awesomplete but leave it alone otherwise
+      // remove events from the input and its form
+      Awesomplete.unbind(this.input, this.events.input);
+      Awesomplete.unbind(this.input.form, this.events.form); // cleanup container if it was created by Awesomplete but leave it alone otherwise
 
       if (!this.options.container) {
-        //move the input out of the awesomplete container and remove the container and its children
+        // move the input out of the awesomplete container and remove the container and
+        // its children
         var parentNode = this.container.parentNode;
         parentNode.insertBefore(this.input, this.container);
         parentNode.removeChild(this.container);
-      } //remove autocomplete and aria-autocomplete attributes
+      } // remove autocomplete and aria-autocomplete attributes
 
 
-      this.input.removeAttribute("autocomplete");
-      this.input.removeAttribute("aria-autocomplete"); //remove this awesomeplete instance from the global array of instances
+      this.input.removeAttribute('autocomplete');
+      this.input.removeAttribute('aria-autocomplete'); // remove this awesomeplete instance from the global array of instances
 
       var indexOfAwesomplete = Awesomplete.all.indexOf(this);
 
@@ -333,7 +386,17 @@ function () {
     key: "next",
     value: function next() {
       var count = this.ul.children.length;
-      this.goto(this.index < count - 1 ? this.index + 1 : count ? 0 : -1);
+      var index = 0;
+
+      if (this.index < count - 1) {
+        index = this.index + 1;
+      } else if (count) {
+        index = 0;
+      } else {
+        index = -1;
+      }
+
+      this.goto(index);
     }
   }, {
     key: "previous",
@@ -349,18 +412,18 @@ function () {
       var lis = this.ul.children;
 
       if (this.selected) {
-        lis[this.index].setAttribute("aria-selected", "false");
+        lis[this.index].setAttribute('aria-selected', 'false');
       }
 
       this.index = i;
 
       if (i > -1 && lis.length > 0) {
-        lis[i].setAttribute("aria-selected", "true");
-        this.status.textContent = lis[i].textContent + ", list item " + (i + 1) + " of " + lis.length;
-        this.input.setAttribute("aria-activedescendant", this.ul.id + "_item_" + this.index); // scroll to highlighted element in case parent's height is fixed
+        lis[i].setAttribute('aria-selected', 'true');
+        this.status.textContent = "".concat(lis[i].textContent, ", list item ").concat(i + 1, " of ").concat(lis.length);
+        this.input.setAttribute('aria-activedescendant', "".concat(this.ul.id, "_item_").concat(this.index)); // scroll to highlighted element in case parent's height is fixed
 
         this.ul.scrollTop = lis[i].offsetTop - this.ul.clientHeight + lis[i].clientHeight;
-        this.fire(this.input, "awesomplete-highlight", {
+        Awesomplete.fire(this.input, 'awesomplete-highlight', {
           text: this.suggestions[this.index]
         });
       }
@@ -368,26 +431,33 @@ function () {
   }, {
     key: "select",
     value: function select(selected, origin) {
-      if (selected) {
-        this.index = this.siblingIndex(selected);
-      } else {
-        selected = this.ul.children[this.index];
-      }
+      var selectedItem = selected;
 
       if (selected) {
+        this.index = Awesomplete.siblingIndex(selected);
+      } else {
+        selectedItem = this.ul.children[this.index];
+      }
+
+      if (selectedItem) {
         var suggestion = this.suggestions[this.index];
-        var allowed = this.fire(this.input, "awesomplete-select", {
-          text: suggestion,
-          origin: origin || selected
+        var selectedIndex = this.index;
+        var allowed = Awesomplete.fire(this.input, 'awesomplete-select', {
+          text: "".concat(suggestion),
+          selectedIndex: selectedIndex,
+          selectedSuggestion: suggestion,
+          origin: origin || selectedItem
         });
 
         if (allowed) {
           this.replace(suggestion);
           this.close({
-            reason: "select"
+            reason: 'select'
           });
-          this.fire(this.input, "awesomplete-selectcomplete", {
-            text: suggestion
+          Awesomplete.fire(this.input, 'awesomplete-selectcomplete', {
+            text: "".concat(suggestion),
+            selectedIndex: selectedIndex,
+            selectedSuggestion: suggestion
           });
         }
       }
@@ -398,174 +468,90 @@ function () {
       var me = this;
       var value = this.input.value;
 
-      if (value.length >= this.minChars && this._list && this._list.length > 0) {
+      if (value.length >= this.minChars && this.dataList && this.dataList.length > 0) {
         this.index = -1; // Populate list with options that match
 
-        this.ul.innerHTML = "";
-        this.suggestions = this._list.map(function (item) {
+        this.ul.innerHTML = '';
+
+        var mapFn = function mapFn(item) {
           return new Suggestion(me.data(item, value));
-        }).filter(function (item) {
+        };
+
+        var filterFn = function filterFn(item) {
           return me.filter(item, value);
-        });
+        };
+
+        this.suggestions = this.dataList.map(mapFn).filter(filterFn);
 
         if (this.sort !== false) {
           this.suggestions = this.suggestions.sort(this.sort);
         }
 
         this.suggestions = this.suggestions.slice(0, this.maxItems);
-        this.suggestions.forEach(function (text, index) {
+
+        var appendFn = function appendFn(text, index) {
           me.ul.appendChild(me.item(text, value, index));
-        });
+        };
+
+        this.suggestions.forEach(appendFn);
 
         if (this.ul.children.length === 0) {
-          this.status.textContent = "No results found";
+          this.status.textContent = 'No results found';
           this.close({
-            reason: "nomatches"
+            reason: 'nomatches'
           });
         } else {
           this.open();
-          this.status.textContent = this.ul.children.length + " results found";
+          this.status.textContent = "".concat(this.ul.children.length, " results found");
         }
       } else {
         this.close({
-          reason: "nomatches"
+          reason: 'nomatches'
         });
-        this.status.textContent = "No results found";
+        this.status.textContent = 'No results found';
       }
     } // Mark: Static methods/properties
 
   }, {
-    key: "Suggestion",
-    // Private functions
-    value: function Suggestion(data) {
-      var o = Array.isArray(data) ? {
-        label: data[0],
-        value: data[1]
-      } : _typeof(data) === "object" && "label" in data && "value" in data ? data : {
-        label: data,
-        value: data
-      };
-      this.label = o.label || o.value;
-      this.value = o.value;
-    } // TODO:
-    // Object.defineProperty(Suggestion.prototype = Object.create(String.prototype), "length", {
-    //     get: function() { return this.label.length; }
-    // });
-    // Suggestion.prototype.toString = Suggestion.prototype.valueOf = function () {
-    //     return "" + this.label;
-    // };
+    key: "list",
+    set: function set(list) {
+      if (Array.isArray(list)) {
+        this.dataList = list;
+      } else if (typeof list === 'string' && list.indexOf(',') > -1) {
+        this.dataList = list.split(/\s*,\s*/);
+      } else {
+        // Element or CSS selector
+        var queriedList = Awesomplete.query(list);
 
-  }, {
-    key: "configure",
-    value: function configure(instance, properties, o) {
-      for (var i in properties) {
-        var initial = properties[i],
-            attrValue = instance.input.getAttribute("data-" + i.toLowerCase());
+        if (queriedList && queriedList.children) {
+          var items = [];
 
-        if (typeof initial === "number") {
-          instance[i] = parseInt(attrValue);
-        } else if (initial === false) {
-          // Boolean options must be false by default anyway
-          instance[i] = attrValue !== null;
-        } else if (initial instanceof Function) {
-          instance[i] = null;
-        } else {
-          instance[i] = attrValue;
-        }
+          var iterFn = function iterFn(el) {
+            if (!el.disabled) {
+              var text = el.textContent.trim();
+              var value = el.value || text;
+              var label = el.label || text;
 
-        if (!instance[i] && instance[i] !== 0) {
-          instance[i] = i in o ? o[i] : initial;
-        }
-      }
-    } // Helpers
+              if (value !== '') {
+                items.push({
+                  label: label,
+                  value: value
+                });
+              }
+            }
+          };
 
-  }, {
-    key: "query",
-    value: function query(expr, con) {
-      return typeof expr === "string" ? (con || document).querySelector(expr) : expr || null;
-    }
-  }, {
-    key: "queryAll",
-    value: function queryAll(expr, con) {
-      return Array.prototype.slice.call((con || document).querySelectorAll(expr));
-    }
-  }, {
-    key: "create",
-    value: function create(tag, o) {
-      var element = document.createElement(tag);
-
-      for (var i in o) {
-        var val = o[i];
-
-        if (i === "inside") {
-          this.query(val).appendChild(element);
-        } else if (i === "around") {
-          var ref = this.query(val);
-          ref.parentNode.insertBefore(element, ref);
-          element.appendChild(ref);
-
-          if (ref.getAttribute("autofocus") != null) {
-            ref.focus();
-          }
-        } else if (i in element) {
-          element[i] = val;
-        } else {
-          element.setAttribute(i, val);
+          Array.prototype.slice.apply(queriedList.children).forEach(iterFn);
+          this.dataList = items;
         }
       }
 
-      return element;
-    }
-  }, {
-    key: "bind",
-    value: function bind(element, o) {
-      if (element) {
-        for (var event in o) {
-          var callback = o[event];
-          event.split(/\s+/).forEach(function (event) {
-            element.addEventListener(event, callback);
-          });
-        }
+      if (document.activeElement === this.input) {
+        this.evaluate();
       }
-    }
-  }, {
-    key: "unbind",
-    value: function unbind(element, o) {
-      if (element) {
-        for (var event in o) {
-          var callback = o[event];
-          event.split(/\s+/).forEach(function (event) {
-            element.removeEventListener(event, callback);
-          });
-        }
-      }
-    }
-  }, {
-    key: "fire",
-    value: function fire(target, type, properties) {
-      var evt = document.createEvent("HTMLEvents");
-      evt.initEvent(type, true, true);
-
-      for (var j in properties) {
-        evt[j] = properties[j];
-      }
-
-      return target.dispatchEvent(evt);
-    }
-  }, {
-    key: "regExpEscape",
-    value: function regExpEscape(s) {
-      return s.replace(/[-\\^$*+?.()|[\]{}]/g, "\\$&");
-    }
-  }, {
-    key: "siblingIndex",
-    value: function siblingIndex(el) {
-      /* eslint-disable no-cond-assign */
-      for (var i = 0; el = el.previousElementSibling; i++) {
-        ;
-      }
-
-      return i;
+    },
+    get: function get() {
+      return this.dataList;
     }
   }, {
     key: "selected",
@@ -580,12 +566,12 @@ function () {
   }], [{
     key: "FILTER_CONTAINS",
     value: function FILTER_CONTAINS(text, input) {
-      return RegExp(this.regExpEscape(input.trim()), "i").test(text);
+      return RegExp(Awesomplete.regExpEscape(input.trim()), 'i').test(text);
     }
   }, {
     key: "FILTER_STARTSWITH",
     value: function FILTER_STARTSWITH(text, input) {
-      return RegExp("^" + this.regExpEscape(input.trim()), "i").test(text);
+      return RegExp("^".concat(Awesomplete.regExpEscape(input.trim())), 'i').test(text);
     }
   }, {
     key: "SORT_BYLENGTH",
@@ -599,32 +585,140 @@ function () {
   }, {
     key: "CONTAINER",
     value: function CONTAINER(input) {
-      return this.create("div", {
-        className: "awesomplete",
+      return Awesomplete.create('div', {
+        className: 'awesomplete',
         around: input
       });
     }
   }, {
     key: "ITEM",
-    value: function ITEM(text, input, item_id) {
-      var html = input.trim() === "" ? text : text.replace(RegExp(this.regExpEscape(input.trim()), "gi"), "<mark>$&</mark>");
-      return this.create("li", {
+    value: function ITEM(text, input, itemId) {
+      var html = input.trim() === '' ? text : "".concat(text).replace(RegExp(Awesomplete.regExpEscape(input.trim()), 'gi'), '<mark>$&</mark>');
+      return Awesomplete.create('li', {
         innerHTML: html,
-        "aria-selected": "false",
-        "id": "awesomplete_list_" + this.count + "_item_" + item_id
+        'aria-selected': 'false',
+        id: "awesomplete_list_".concat(this.count, "_item_").concat(itemId)
       });
     }
   }, {
     key: "REPLACE",
     value: function REPLACE(text) {
-      this.input.value = text.value;
+      this.input.value = text.value || text.label;
     }
   }, {
     key: "DATA",
     value: function DATA(item
-    /*, input*/
+    /* , input */
     ) {
       return item;
+    } // Helpers
+
+  }, {
+    key: "query",
+    value: function query(expr, con) {
+      return typeof expr === 'string' ? (con || document).querySelector(expr) : expr || null;
+    }
+  }, {
+    key: "queryAll",
+    value: function queryAll(expr, con) {
+      return Array.prototype.slice.call((con || document).querySelectorAll(expr));
+    }
+  }, {
+    key: "create",
+    value: function create(tag, o) {
+      var element = document.createElement(tag);
+
+      var iterFn = function iterFn(i) {
+        var val = o[i];
+
+        if (i === 'inside') {
+          Awesomplete.query(val).appendChild(element);
+        } else if (i === 'around') {
+          var ref = Awesomplete.query(val);
+          ref.parentNode.insertBefore(element, ref);
+          element.appendChild(ref);
+
+          if (ref.getAttribute('autofocus') != null) {
+            ref.focus();
+          }
+        } else if (i in element) {
+          element[i] = val;
+        } else {
+          element.setAttribute(i, val);
+        }
+      };
+
+      Object.keys(o).forEach(iterFn);
+      return element;
+    }
+  }, {
+    key: "bind",
+    value: function bind(element, o) {
+      if (element) {
+        var iterFn = function iterFn(cKey) {
+          var callback = o[cKey];
+
+          var eventIterFn = function eventIterFn(event) {
+            element.addEventListener(event, callback);
+          };
+
+          cKey.split(/\s+/).forEach(eventIterFn);
+        };
+
+        Object.keys(o).forEach(iterFn);
+      }
+    }
+  }, {
+    key: "unbind",
+    value: function unbind(element, o) {
+      if (element) {
+        var iterFn = function iterFn(cKey) {
+          var callback = o[cKey];
+
+          var eventIterFn = function eventIterFn(event) {
+            element.removeEventListener(event, callback);
+          };
+
+          cKey.split(/\s+/).forEach(eventIterFn);
+        };
+
+        Object.keys(o).forEach(iterFn);
+      }
+    }
+  }, {
+    key: "fire",
+    value: function fire(target, type, properties) {
+      var evt = document.createEvent('HTMLEvents');
+
+      var iterFn = function iterFn(j) {
+        evt[j] = properties[j];
+      };
+
+      evt.initEvent(type, true, true);
+
+      if (_typeof(properties) === 'object') {
+        Object.keys(properties).forEach(iterFn);
+      }
+
+      return target.dispatchEvent(evt);
+    }
+  }, {
+    key: "regExpEscape",
+    value: function regExpEscape(s) {
+      return s.replace(/[-\\^$*+?.()|[\]{}]/g, '\\$&');
+    }
+  }, {
+    key: "siblingIndex",
+    value: function siblingIndex(el) {
+      var i = 0;
+      var testEl = el;
+
+      while (testEl) {
+        testEl = testEl.previousElementSibling;
+        i += 1;
+      }
+
+      return i;
     }
   }]);
 

@@ -4,7 +4,7 @@
 [![Code Climate](https://img.shields.io/codeclimate/github/LeaVerou/awesomplete.svg)](https://codeclimate.com/github/LeaVerou/awesomplete)
 [![Test Coverage](https://img.shields.io/codeclimate/coverage/github/LeaVerou/awesomplete.svg)](https://codeclimate.com/github/LeaVerou/awesomplete/coverage)
 
-https://gintsmurans.github.io/awesomplete-cs6/
+https://gintsmurans.github.io/awesomplete-es6/
 
 Awesomplete is an ultra lightweight, customizable, simple autocomplete widget with zero dependencies, built with modern standards for modern browsers.
 
@@ -13,7 +13,7 @@ There are a few ways to obtain the needed files.
 Here are 2 of them:
 
 ```sh
-npm install awesomplete-cs6 --save
+npm install awesomplete-es6 --save
 ```
 
 More information about the npm package can be found [here](https://www.npmjs.com/package/awesomplete-es6).

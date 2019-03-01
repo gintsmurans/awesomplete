@@ -1,32 +1,42 @@
 {
-  "name": "awesomplete",
-  "version": "1.1.1",
-  "description": "http://leaverou.github.io/awesomplete/",
-  "main": "awesomplete.js",
+  "name": "awesomplete-es6",
+  "version": "1.2.0",
+  "description": "http://gintsmurans.github.io/awesomplete-es6/",
+  "main": "./src/js/awesomplete.js",
   "scripts": {
-    "test": "karma start --single-run"
+    "test": "npm run js:build:dev",
+    "js:build": "webpack --mode production",
+    "js:build:dev": "webpack --mode development",
+    "js:watch": "webpack --watch --mode development",
+    "css:build:base": "node-sass --output-style compressed --sourceMap true src/scss/awesomplete.scss dist/awesomplete.css",
+    "css:build:theme": "node-sass --output-style compressed --sourceMap true src/scss/awesomplete.theme.scss dist/awesomplete.theme.css",
+    "css:build": "npm run css:build:base && npm run css:build:theme",
+    "css:watch": "nodemon -e scss -x \"npm run css:build\""
   },
-  "repository": "LeaVerou/awesomplete",
+  "repository": "gintsmurans/awesomplete-es6",
   "author": "Lea Verou",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/LeaVerou/awesomplete/issues"
+    "url": "https://github.com/gintsmurans/awesomplete-es6/issues"
   },
-  "homepage": "https://leaverou.github.io/awesomplete/",
+  "homepage": "http://gintsmurans.github.io/awesomplete-es6/",
   "devDependencies": {
-    "gulp": "^3.9.0",
-    "gulp-concat": "^2.6.0",
-    "gulp-header": "^1.7.1",
-    "gulp-rename": "^1.2.2",
-    "gulp-sourcemaps": "^1.6.0",
-    "gulp-uglify": "^2.0.0",
-    "jasmine-core": "^2.4.1",
-    "karma": "^0.13.19",
-    "karma-chrome-launcher": "^0.2.2",
-    "karma-coverage": "^0.5.3",
-    "karma-fixture": "^0.2.5",
-    "karma-html2js-preprocessor": "^0.1.0",
-    "karma-jasmine": "^0.3.6",
-    "karma-jasmine-def": "^0.1.0"
+    "@babel/core": "^7.3.4",
+    "@babel/preset-env": "^7.3.4",
+    "babel-loader": "^8.0.5",
+    "eslint": "^5.14.1",
+    "eslint-config-airbnb-base": "^13.1.0",
+    "eslint-config-google": "^0.12.0",
+    "eslint-config-standard": "^12.0.0",
+    "eslint-loader": "^2.1.2",
+    "eslint-plugin-import": "^2.16.0",
+    "eslint-plugin-node": "^8.0.1",
+    "eslint-plugin-promise": "^4.0.1",
+    "eslint-plugin-standard": "^4.0.0",
+    "node-sass": "^4.11.0",
+    "nodemon": "^1.18.10",
+    "sass": "^1.17.2",
+    "webpack": "^4.29.5",
+    "webpack-cli": "^3.2.3"
   }
 }

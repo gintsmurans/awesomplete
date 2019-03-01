@@ -1,6 +1,6 @@
 # Awesomplete ES6 Module
-[![npm version](https://img.shields.io/npm/v/awesomplete.svg)](https://www.npmjs.com/package/awesomplete-es6)
-[![Build Status](https://img.shields.io/travis/gintsmurans/awesomplete-es6/gh-pages.svg)](https://travis-ci.org/gintsmurans/awesomplete-es6)
+[![npm version](https://img.shields.io/npm/v/awesomplete-es6.svg)](https://www.npmjs.com/package/awesomplete-es6)
+[![Build Status](https://travis-ci.org/gintsmurans/awesomplete-es6.svg?branch=master)](https://travis-ci.org/gintsmurans/awesomplete-es6)
 <!--- [![Code Climate](https://img.shields.io/codeclimate/github/gintsmurans/awesomplete-es6.svg)](https://codeclimate.com/github/gintsmurans/awesomplete-es6) --->
 <!--- [![Test Coverage](https://img.shields.io/codeclimate/coverage/github/gintsmurans/awesomplete-es6.svg)](https://codeclimate.com/github/gintsmurans/awesomplete-es6/coverage) --->
 
@@ -81,8 +81,8 @@ details.
 This is ES6 fork of the original library that can be found at <http://leaverou.github.io/awesomplete/>.
 
 Documentation for the API and other topics is at
-<http://leaverou.github.io/awesomplete/#api>.
+<https://gintsmurans.github.io/awesomplete-es6/#api>.
 
 Created by Lea Verou and other fantastic contributors.
 
-[1]: https://github.com/LeaVerou/awesomplete/blob/gh-pages/LICENSE
+[1]: https://github.com/gintsmurans/awesomplete-es6/blob/master/LICENSE

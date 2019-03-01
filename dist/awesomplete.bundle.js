@@ -188,7 +188,12 @@ function () {
     this.input.setAttribute('role', 'combobox'); // store constructor options in case we need to distinguish
     // between default and customized behavior later on
 
-    this.options = o || {};
+    if (o) {
+      this.options = o;
+    } else {
+      this.options = {};
+    }
+
     this.configure({
       minChars: 2,
       maxItems: 10,
@@ -441,6 +446,7 @@ function () {
         });
 
         if (allowed) {
+          console.log(suggestion);
           this.replace(suggestion);
           this.close({
             reason: 'select'
@@ -594,6 +600,7 @@ function () {
   }, {
     key: "REPLACE",
     value: function REPLACE(text) {
+      console.log(text);
       this.input.value = text.value || text.label;
     }
   }, {

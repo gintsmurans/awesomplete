@@ -59,7 +59,11 @@ export default class Awesomplete {
 
         // store constructor options in case we need to distinguish
         // between default and customized behavior later on
-        this.options = o || {};
+        if (o) {
+            this.options = o;
+        } else {
+            this.options = {};
+        }
 
         this.configure({
             minChars: 2,
@@ -339,9 +343,8 @@ export default class Awesomplete {
         }
 
         if (selectedItem) {
-            const suggestion = this.suggestions[this.index];
             const selectedIndex = this.index;
-
+            const suggestion = this.suggestions[selectedIndex];
             const allowed = Awesomplete.fire(this.input, 'awesomplete-select', {
                 text: `${suggestion}`,
                 selectedIndex,
@@ -529,7 +532,9 @@ export default class Awesomplete {
         let testEl = el;
         while (testEl) {
             testEl = testEl.previousElementSibling;
-            i += 1;
+            if (testEl) {
+                i += 1;
+            }
         }
 
         return i;

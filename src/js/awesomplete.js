@@ -198,7 +198,7 @@ export default class Awesomplete {
 
             if (queriedList && queriedList.children) {
                 const items = [];
-                const fn = function (el) {
+                const iterFn = (el) => {
                     if (!el.disabled) {
                         const text = el.textContent.trim();
                         const value = el.value || text;
@@ -208,7 +208,7 @@ export default class Awesomplete {
                         }
                     }
                 };
-                Array.prototype.slice.apply(queriedList.children).forEach(fn);
+                Array.prototype.slice.apply(queriedList.children).forEach(iterFn);
                 this.dataList = items;
             }
         }

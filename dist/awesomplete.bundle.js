@@ -1,14 +1,5 @@
-(function webpackUniversalModuleDefinition(root, factory) {
-	if(typeof exports === 'object' && typeof module === 'object')
-		module.exports = factory();
-	else if(typeof define === 'function' && define.amd)
-		define([], factory);
-	else if(typeof exports === 'object')
-		exports["Awesomplete"] = factory();
-	else
-		root["Awesomplete"] = factory();
-})(window, function() {
-return /******/ (function(modules) { // webpackBootstrap
+var Awesomplete =
+/******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
 /******/
@@ -729,6 +720,5 @@ function () {
 
 /***/ })
 
-/******/ });
-});
+/******/ })["default"];
 //# sourceMappingURL=awesomplete.bundle.js.map

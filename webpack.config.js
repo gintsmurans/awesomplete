@@ -11,8 +11,9 @@ var config = {
     output: {
         filename: '[name].bundle.js',
         path: path.resolve(__dirname, 'dist/'),
-        libraryTarget: 'umd',
-        library: 'Awesomplete'
+        library: 'Awesomplete',
+        libraryExport: 'default',
+        libraryTarget: 'var'
     },
     module: {
         rules: [
@@ -23,7 +24,7 @@ var config = {
                 loader: "eslint-loader"
             },
             {
-                test: /\.m?js$/,
+                test: /\.js$/,
                 exclude: /(node_modules|bower_components)/,
                 use: {
                     loader: 'babel-loader',

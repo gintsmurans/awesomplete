@@ -6,6 +6,7 @@
  * MIT license
  */
 
+
 /** Class representing a single Suggesstion. */
 class Suggestion {
     constructor(data) {
@@ -38,6 +39,7 @@ class Suggestion {
         return this.toString();
     }
 }
+
 
 /** Class representing Awesomplete. */
 export default class Awesomplete {
@@ -81,7 +83,6 @@ export default class Awesomplete {
         this.index = -1;
 
         // Create necessary elements
-
         this.container = this.container(input);
 
         this.ul = Awesomplete.create('ul', {
@@ -101,7 +102,6 @@ export default class Awesomplete {
         });
 
         // Bind events
-
         this.events = {
             input: {
                 input: this.evaluate.bind(this),
@@ -409,8 +409,8 @@ export default class Awesomplete {
         }
     }
 
-    // Mark: Static methods/properties
 
+    // Mark: Static methods/properties
     static FILTER_CONTAINS(text, input) {
         return RegExp(Awesomplete.regExpEscape(input.trim()), 'i').test(text);
     }
@@ -451,8 +451,8 @@ export default class Awesomplete {
         return item;
     }
 
-    // Helpers
 
+    // Helpers
     static query(expr, con) {
         return typeof expr === 'string' ? (con || document).querySelector(expr) : expr || null;
     }

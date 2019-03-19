@@ -114,6 +114,7 @@ export default class Awesomplete {
                     if (me.opened) {
                         if (c === 13 && me.selected) { // Enter
                             evt.preventDefault();
+                            evt.stopImmediatePropagation();
                             me.select();
                         } else if (c === 9 && me.selected && me.tabSelect) {
                             me.select();
